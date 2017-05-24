@@ -84,3 +84,105 @@ val s = when(a) {
 - ん〜シンプルでこれ好き
 
 #### new
+- コンストラクタの呼び出しに`new`はいらない
+```
+val foo = Foo()
+```
+
+#### クラス
+- アクセス修飾子は`public`,`private`,`protected`,`internal`
+
+- `protected`は同じパッケージ内でもサブクラスからしかアクセスできない
+- `internal`は同じモジュール内からアクセスできる
+
+- Kotlinにはフィールドが存在しないため，変数はプロパティとなる(getter/setterをまとめたようなもの)
+
+```
+class Person {
+    val firstName: String
+    val lastName: String
+    val age: Int
+
+    constructor(firstName: String, lastName: String, age: Int) {
+        this.firstName = firstName
+        this.lastName = lastName
+        this.age = age
+    }
+
+    fun getFullName(): String {
+        return firstName + " " + lastName
+    }
+}
+```
+
+- プロパティの使い方
+```
+// Java
+final int age = person.getAge();
+person.setAge(age+1);
+
+// Kotlin
+val age = person.age
+person.age = age + 1
+```
+
+- `person.fullName`で取得可能
+
+```
+val fullName: String
+    get() {
+        return firstName + " " + lastName
+    }
+```
+
+- varで宣言するとsetterの実装も可能
+
+- プロパティの実装が式1つで済む場合
+
+```
+val fullName: String
+    get() = firstName + " " + lastName
+```
+
+- プロパティはメソッドと等価なので，サブクラスでオーバーライドやインタフェースにプロパティを宣言して，それをオーバーライドして実装もできる
+
+#### コンストラクタ
+- プロパティの宣言とコンストラクタの宣言をまとめることができる(プリまりコンストラクタ)
+
+```
+class Person(val firstName: String, val lastName: String, var age: Int) {
+
+}
+```
+
+- これはプロパティを初期化する処理しか書けない
+
+- `init`を使う
+
+```
+class Person(val firstName: String, val lastName: String) {
+    var age: Int
+
+    init {
+        age = 0
+    }
+}
+```
+
+- `constructor`で作るコンストラクタ(セカンダリコンストラクタ) -> いくつでも作れる
+
+```
+class Person(val firstName: String, val lastName: String, var age: Int) {
+    constructor(firstName: String, lastName: String) : this(firstName, lastName, 0) {
+    }
+}
+```
+
+- `age`を省略するだけのコンストラクタなら次のようにかける
+
+```
+class Person(var firstName: String, val lastName: String, var age: Int = 0) {
+}
+```
+
+#### メソッド
